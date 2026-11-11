@@ -1,0 +1,23 @@
+{
+  "name": "@luoshu-official/create-plugin",
+  "version": "0.1.0",
+  "description": "洛书（Luoshu）插件脚手架——一条命令生成可运行的插件项目",
+  "license": "Apache-2.0",
+  "type": "module",
+  "bin": {
+    "create-luoshu-plugin": "./bin.mjs"
+  },
+  "files": [
+    "bin.mjs",
+    "template/",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "prepublishOnly": "node scripts/sync-template.cjs && node scripts/verify-template.cjs"
+  },
+  "devDependencies": {},
+  "engines": {
+    "node": ">=18"
+  }
+}

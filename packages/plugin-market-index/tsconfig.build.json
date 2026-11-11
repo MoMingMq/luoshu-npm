@@ -1,0 +1,17 @@
+{
+  // 发布产物构建（T1）：与 tsconfig.json（纯类型检查）的差异 = emit dist +
+  // rewriteRelativeImportExtensions（.ts 相对导入说明符重写为 .js——TS5.7+；
+  // 源码内部相对导入统一 .ts 显式后缀的仓规在 emit 态由该 flag 兜住）。
+  // dist 仅为 npm 发布产物（publishConfig.exports 指向）；仓内消费全走 src。
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "outDir": "dist",
+    "rootDir": "src",
+    "declaration": true,
+    "declarationMap": false,
+    "sourceMap": false,
+    "rewriteRelativeImportExtensions": true
+  },
+  "include": ["src"],
+  "exclude": ["src/**/*.test.ts"]
+}

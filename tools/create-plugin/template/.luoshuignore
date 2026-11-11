@@ -1,0 +1,8 @@
+# 独立仓打包白名单：这些是开发期文件/目录，不进 lpkg
+.luoshuignore
+node_modules
+ui
+vite.ui.config.ts
+tsconfig.json
+README.md
+src/index.test.ts

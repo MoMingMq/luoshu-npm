@@ -1,0 +1,15 @@
+{
+  // noEmit+allowImportingTsExtensions（2026-11-01 P3 批1 T3）：内部相对导入统一 .ts
+  // 显式后缀——宿主进程以 Node type stripping 直载插件 TS 源链上的 luoshu-api
+  // （native ESM 不做 .js→.ts 说明符重写，实测 ERR_MODULE_NOT_FOUND）。仓内消费
+  // 全走 src（exports 指向源码；vitest/esbuild 均解 .ts），dist 仅为发布产物
+  // （发布路径随发版门禁另行定夺）；build 脚本因此转为纯类型检查。
+  "extends": "../../tsconfig.base.json",
+  "compilerOptions": {
+    "allowImportingTsExtensions": true,
+    "noEmit": true,
+    "rootDir": "src"
+  },
+  "include": ["src"],
+  "exclude": ["src/**/*.test.ts"]
+}

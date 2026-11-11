@@ -1,0 +1,74 @@
+# npm 发布流水线（luoshu-npm 公开发布源）：npm-v* tag 或手动触发 → 双包发布。
+# provenance：公开仓 OIDC 交换可通——发布包带审计徽标（主仓私有不可签，故迁此发布）。
+# 发布门禁（用户定规）：tag 只在用户明确说「发版」时创建。
+name: publish
+
+on:
+  push:
+    tags: ['npm-v*']
+  workflow_dispatch:
+
+permissions:
+  contents: read
+  id-token: write # npm provenance（OIDC）
+
+concurrency:
+  group: publish-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  publish-market-index:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 12.9.1
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          registry-url: 'https://registry.npmjs.org'
+          cache: pnpm
+
+      - name: Install
+        run: pnpm install --frozen-lockfile
+
+      - name: Test
+        run: pnpm --filter @luoshu-official/plugin-market-index test
+
+      - name: Typecheck
+        run: pnpm --filter @luoshu-official/plugin-market-index typecheck
+
+      - name: Build dist
+        run: pnpm --filter @luoshu-official/plugin-market-index build
+
+      - name: Publish（npm provenance）
+        run: pnpm --filter @luoshu-official/plugin-market-index publish --access public --no-git-checks
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NPM_CONFIG_PROVENANCE: true
+
+  publish-create-plugin:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          registry-url: 'https://registry.npmjs.org'
+
+      - name: 模板同步 + 真跑门禁（生成→install→build:ui→test）
+        working-directory: tools/create-plugin
+        run: |
+          node scripts/sync-template.cjs
+          node scripts/verify-template.cjs
+
+      - name: Publish（npm provenance）
+        working-directory: tools/create-plugin
+        run: npm publish --access public
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NPM_CONFIG_PROVENANCE: true

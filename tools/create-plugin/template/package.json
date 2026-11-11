@@ -1,0 +1,33 @@
+{
+  "name": "luoshu-plugin-template",
+  "version": "0.1.0",
+  "private": true,
+  "description": "洛书插件模板：宿主服务缝 + 工作台页签 + 设置 + 快捷键",
+  "type": "module",
+  "main": "src/index.ts",
+  "luoshu": {
+    "provides": [
+      "demo",
+      "commands"
+    ],
+    "tier": "extension",
+    "ui": "web/ui/index.js",
+    "kind": "demo",
+    "kindLabel": "示例"
+  },
+  "scripts": {
+    "build:ui": "vite build -c vite.ui.config.ts",
+    "test": "vitest run",
+    "typecheck": "vue-tsc --noEmit -p tsconfig.json"
+  },
+  "devDependencies": {
+    "@vicons/tabler": "^0.13.0",
+    "@vitejs/plugin-vue": "^6.0.10",
+    "naive-ui": "^2.45.3",
+    "typescript": "5.8.3",
+    "vite": "^8.3.4",
+    "vitest": "^5.0.5",
+    "vue": "^3.5.44",
+    "vue-tsc": "^3.3.13"
+  }
+}

@@ -1,0 +1,39 @@
+{
+  "name": "@luoshu-official/plugin-market-index",
+  "version": "0.1.2",
+  "description": "洛书（Luoshu）插件市场索引格式 1 校验器——无运行时依赖的纯函数规则集",
+  "keywords": [
+    "luoshu",
+    "plugin-market",
+    "index"
+  ],
+  "license": "Apache-2.0",
+  "sideEffects": false,
+  "type": "module",
+  "exports": {
+    ".": "./src/index.ts"
+  },
+  "publishConfig": {
+    "access": "public",
+    "exports": {
+      ".": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      }
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "test": "vitest run",
+    "typecheck": "tsc -p tsconfig.json",
+    "build": "tsc -p tsconfig.build.json && node scripts/fix-dts.cjs"
+  },
+  "devDependencies": {
+    "typescript": "^5.8.3",
+    "vitest": "^5.0.5"
+  }
+}
