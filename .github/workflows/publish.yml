@@ -44,8 +44,11 @@ jobs:
       - name: Build dist
         run: pnpm --filter @luoshu-official/plugin-market-index build
 
-      - name: Publish（npm provenance）
-        run: pnpm --filter @luoshu-official/plugin-market-index publish --access public --no-git-checks
+      - name: 发布前注入 dist exports（pnpm publish 特性——npm CLI 无此重写）
+        run: node scripts/inject-publish-exports.cjs
+
+      - name: Publish（npm CLI——provenance OIDC 第一方支持；pnpm 12.9.1 交换端点 404 实证弃用）
+        run: npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           NPM_CONFIG_PROVENANCE: true

@@ -1,6 +1,6 @@
 {
   "name": "@luoshu-official/plugin-market-index",
-  "version": "0.1.3",
+  "version": "0.1.4",
   "description": "洛书（Luoshu）插件市场索引格式 1 校验器——无运行时依赖的纯函数规则集",
   "keywords": [
     "luoshu",
