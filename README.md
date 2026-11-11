@@ -32,6 +32,17 @@ import { parseMarketIndex } from '@luoshu-official/plugin-market-index'
 const normalized = parseMarketIndex(doc, 'https://your.domain/index.json') // 失败抛 MarketIndexError
 ```
 
+## 官方索引生成
+
+官方插件索引（`https://luoshucosgz.mmingq.com/market/npm/index.json`）由本仓的生成器维护：
+
+```bash
+node scripts/build-market-index-npm.mjs --out index.json
+# 产出经 @luoshu-official/plugin-market-index 校验器自检（坏索引不出门）
+```
+
+按 `keywords:luoshu-plugin` 从 npm 聚合全部插件包；插件作者发布后重跑本脚本并更新静态托管即可被市场收录。
+
 ## 发布
 
 流水线（`.github/workflows/publish.yml`）：`npm-v*` tag 或手动触发 → 各包独立测试/构建 → npm publish（带 provenance）。所有包 Apache-2.0。
