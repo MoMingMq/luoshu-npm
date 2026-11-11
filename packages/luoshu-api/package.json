@@ -59,5 +59,14 @@
   },
   "engines": {
     "node": ">=20"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MoMingMq/luoshu-npm.git",
+    "directory": "packages/luoshu-api"
+  },
+  "homepage": "https://luoshu.mmingq.com/plugin-dev/",
+  "bugs": {
+    "url": "https://github.com/MoMingMq/luoshu-npm/issues"
   }
 }
