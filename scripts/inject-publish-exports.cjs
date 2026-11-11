@@ -17,6 +17,5 @@ if (JSON.stringify(pkg.exports) === JSON.stringify(distExports)) {
   process.exit(0)
 }
 pkg.exports = distExports
-fs.writeFileSync(pkgPath, JSON.stringify(pkg, null, 2) + '
-')
+fs.writeFileSync(pkgPath, JSON.stringify(pkg, null, 2) + '\n')
 console.log('[inject-exports] exports → dist（发布态）')
