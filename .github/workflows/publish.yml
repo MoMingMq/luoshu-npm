@@ -55,6 +55,41 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           NPM_CONFIG_PROVENANCE: true
 
+  # ── 包 2：插件 API SDK（workspace 包——esbuild bundle + tsc d.ts；zod/vitest 外部）──
+  publish-luoshu-api:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: pnpm/action-setup@v4
+        with:
+          version: 12.9.1
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          registry-url: 'https://registry.npmjs.org'
+          cache: pnpm
+
+      - name: Install
+        run: pnpm install --frozen-lockfile
+
+      - name: Test
+        run: pnpm --filter @luoshu-official/luoshu-api test
+
+      - name: Typecheck
+        run: pnpm --filter @luoshu-official/luoshu-api typecheck
+
+      - name: Build dist
+        run: pnpm --filter @luoshu-official/luoshu-api build
+
+      - name: Publish（npm provenance）
+        run: pnpm --filter @luoshu-official/luoshu-api publish --access public --no-git-checks
+        env:
+          NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          NPM_CONFIG_PROVENANCE: true
+
+  # ── 包 3：插件脚手架（非 workspace——纯 npm 环境 + 模板同步/真跑门禁）─────────
   publish-create-plugin:
     runs-on: ubuntu-latest
     steps:
