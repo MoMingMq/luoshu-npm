@@ -1,0 +1,63 @@
+{
+  "name": "@luoshu-official/luoshu-api",
+  "version": "2.0.0",
+  "description": "洛书（Luoshu）插件 API——开发洛书插件所需的类型定义与 manifest/provider 契约校验（版本与宿主对齐）",
+  "keywords": [
+    "luoshu",
+    "plugin",
+    "electron",
+    "database",
+    "sdk"
+  ],
+  "license": "Apache-2.0",
+  "sideEffects": false,
+  "type": "module",
+  "main": "./src/index.ts",
+  "exports": {
+    ".": "./src/index.ts",
+    "./testing": "./src/contract-test.ts"
+  },
+  "publishConfig": {
+    "access": "public",
+    "exports": {
+      ".": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "./testing": {
+        "types": "./dist/contract-test.d.ts",
+        "default": "./dist/contract-test.js"
+      }
+    }
+  },
+  "files": [
+    "dist",
+    "README.md",
+    "LICENSE"
+  ],
+  "scripts": {
+    "test": "vitest run",
+    "build": "node scripts/build.mjs",
+    "typecheck": "tsc -p tsconfig.json",
+    "prepublishOnly": "npm run build"
+  },
+  "dependencies": {
+    "zod": "^4.6.7"
+  },
+  "peerDependencies": {
+    "vitest": ">=1.0.0"
+  },
+  "peerDependenciesMeta": {
+    "vitest": {
+      "optional": true
+    }
+  },
+  "devDependencies": {
+    "esbuild": "^0.28.2",
+    "typescript": "^5.8.3",
+    "vitest": "^5.0.5"
+  },
+  "engines": {
+    "node": ">=20"
+  }
+}

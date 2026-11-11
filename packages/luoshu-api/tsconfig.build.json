@@ -1,0 +1,16 @@
+{
+  // 发布构建：d.ts 产物专config（emitDeclarationOnly；allowImportingTsExtensions
+  // 强制 noEmit 或 emitDeclarationOnly 二选一——TS 官方约束，故与 tsconfig.json 分离）。
+  // rewriteRelativeImportExtensions 只重写 JS emit；d.ts 的 .ts 说明符由
+  // scripts/build.mjs 的 dts-rewrite 步骤统一改写为 .js（确定性文本变换）。
+  "extends": "./tsconfig.json",
+  "compilerOptions": {
+    "noEmit": false,
+    "outDir": "dist",
+    "emitDeclarationOnly": true,
+    "declarationMap": false,
+    "sourceMap": false,
+    "rewriteRelativeImportExtensions": true
+  },
+  "exclude": ["src/**/*.test.ts"]
+}
