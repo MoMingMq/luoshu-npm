@@ -19,5 +19,14 @@
   "devDependencies": {},
   "engines": {
     "node": ">=18"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/MoMingMq/luoshu-npm.git",
+    "directory": "tools/create-plugin"
+  },
+  "homepage": "https://luoshu.mmingq.com/plugin-dev/",
+  "bugs": {
+    "url": "https://github.com/MoMingMq/luoshu-npm/issues"
   }
 }
