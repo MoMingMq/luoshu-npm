@@ -83,8 +83,9 @@ jobs:
       - name: Build dist
         run: pnpm --filter @luoshu-official/luoshu-api build
 
-      - name: Publish（npm provenance）
-        run: pnpm --filter @luoshu-official/luoshu-api publish --access public --no-git-checks
+      - name: Publish（npm CLI——pnpm OIDC 交换 404 实证弃用；luoshu-api exports 本就指 dist 无需注入）
+        working-directory: packages/luoshu-api
+        run: npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
           NPM_CONFIG_PROVENANCE: true
