@@ -1,4 +1,4 @@
-// naive-ui 宿主共享垫片（件模板）：vite alias 把 'naive-ui' 重写到本文件——
+// naive-ui 宿主共享垫片（件模板）：vite alias 把 'naive-ui' 重写到本文件
 // 组件对象/具名 locale/hook 均取宿主单实例（window.__luoshuHostDeps.naive，渲染入口
 // host-deps.ts 最先注入；useDialog/useMessage 的 inject 键属于宿主 naive——跨实例
 // inject 会静默失败，故件永不自捆 naive-ui）。名单基线平移自旧壳

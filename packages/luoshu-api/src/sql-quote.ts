@@ -23,6 +23,31 @@ import type { SqlDialect } from './types.ts'
 /** 方言入参形态：ConnectionInfo.dialect 可缺省（未声明按 pg 风格，types.ts 契约） */
 export type QuoteDialect = SqlDialect | undefined
 
+/** ORDER BY 表达式段（用户排序：列名 + 可选方向） */
+export interface OrderBySegment {
+  /** 列名（未引用原文） */
+  column: string
+  /** true = DESC */
+  desc: boolean
+}
+
+/**
+ * 解析 orderBy 表达式串 → 段清单：逗号分隔，每段「列名 [ASC|DESC]」（大小写不敏感）。
+ * 空段/空列名丢弃；方向词非法时按列名部分照常取（如 `name sideways` → name ASC）。
+ * 供各插件 nodeQuery 把用户排序编译为方言 ORDER BY（列名仍须经各方言引用器）。
+ */
+export function parseOrderBy(orderBy: string): OrderBySegment[] {
+  const out: OrderBySegment[] = []
+  for (const raw of orderBy.split(',')) {
+    const tokens = raw.trim().split(/\s+/).filter((t) => t.length > 0)
+    if (tokens.length === 0) continue
+    const column = tokens[0] as string
+    const dir = tokens.length > 1 ? (tokens[tokens.length - 1] as string).toUpperCase() : ''
+    out.push({ column, desc: dir === 'DESC' })
+  }
+  return out
+}
+
 /** 方言 → 标识符引号字符：mysql 反引号，其余（含缺省）双引号 */
 export function quoteCharOf(dialect: QuoteDialect): '`' | '"' {
   return dialect === 'mysql' ? '`' : '"'

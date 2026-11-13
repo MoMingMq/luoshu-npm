@@ -2,7 +2,7 @@
  * 插件代码元数据（v2）——插件入口 `export const meta` 的契约。
  *
  * 设计边界：
- * - package.json `luoshu` 只保留装载/分类字段：provides/tier/ui/hostGroup/kind/kindLabel/market；
+ * - package.json `luoshu` 只保留装载/分类字段：provides/tier/ui/hostGroup/kind/kindLabel/market/label；
  * - 本文件描述插件代码导出的展示与声明面：name/description/publisher/capabilities/form/tree/settings；
  * - 宿主启动时读取 `meta` 并上报 Main，壳/市场/设置/连接树在插件未激活时也能拿到静态声明；
  * - 设置优先由 UI 代码 `ctx.ui.settings` 贡献；data-source 的连接表单/树形仍需要装载前静态面

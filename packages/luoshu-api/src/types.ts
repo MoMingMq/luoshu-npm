@@ -164,6 +164,8 @@ export interface SchemaInfo {
   primaryKey?: string[]
   /** 外键清单：无外键时省略或空数组；插件未查询时省略。 */
   foreignKeys?: ForeignKeyInfo[]
+  /** 表注释（可选；方言不支持或插件未查询时省略——设计器回填与 DDL 比对消费） */
+  comment?: string
 }
 /**
  * 查询参数（可选面）。修订记录：

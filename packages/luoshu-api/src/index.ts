@@ -71,8 +71,8 @@ export type {
 } from './metadata.ts'
 
 // 方言工具
-export { quoteCharOf, quoteIdentifier, quoteTableRef, placeholderOf } from './sql-quote.ts'
-export type { QuoteDialect } from './sql-quote.ts'
+export { quoteCharOf, quoteIdentifier, quoteTableRef, placeholderOf, parseOrderBy } from './sql-quote.ts'
+export type { QuoteDialect, OrderBySegment } from './sql-quote.ts'
 export { TYPE_WORDS_BY_FAMILY, mapSqliteKeyword, mapNativeToStandard, nativeVocabularyOf } from './type-words.ts'
 export type { StandardType, TypeFamily } from './type-words.ts'
 

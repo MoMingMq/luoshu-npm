@@ -9,7 +9,7 @@ import { validatePluginCodeMeta } from './metadata.ts'
 
 const repoRoot = resolve(__dirname, '../../..')
 const pluginsRoot = join(repoRoot, 'plugins')
-const PACKAGE_KEYS = new Set(['provides', 'tier', 'ui', 'hostGroup', 'kind', 'kindLabel', 'market'])
+const PACKAGE_KEYS = new Set(['provides', 'tier', 'ui', 'hostGroup', 'kind', 'kindLabel', 'market', 'label'])
 
 function pluginDirs(): string[] {
   const dirs: string[] = []

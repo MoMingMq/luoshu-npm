@@ -48,7 +48,19 @@ jobs:
         working-directory: packages/plugin-market-index
         run: node ../../scripts/inject-publish-exports.cjs
 
+      - name: Check published version
+        id: version
+        working-directory: packages/plugin-market-index
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          if npm view "@luoshu-official/plugin-market-index@${VERSION}" version >/dev/null 2>&1; then
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Publish（npm CLI——provenance OIDC 第一方支持；pnpm 12.9.1 交换端点 404 实证弃用）
+        if: steps.version.outputs.skip != 'true'
         working-directory: packages/plugin-market-index
         run: npm publish --access public
         env:
@@ -83,7 +95,19 @@ jobs:
       - name: Build dist
         run: pnpm --filter @luoshu-official/luoshu-api build
 
+      - name: Check published version
+        id: version
+        working-directory: packages/luoshu-api
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          if npm view "@luoshu-official/luoshu-api@${VERSION}" version >/dev/null 2>&1; then
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Publish（npm CLI——pnpm OIDC 交换 404 实证弃用；luoshu-api exports 本就指 dist 无需注入）
+        if: steps.version.outputs.skip != 'true'
         working-directory: packages/luoshu-api
         run: npm publish --access public
         env:
@@ -107,7 +131,19 @@ jobs:
           node scripts/sync-template.cjs
           node scripts/verify-template.cjs
 
+      - name: Check published version
+        id: version
+        working-directory: tools/create-plugin
+        run: |
+          VERSION=$(node -p "require('./package.json').version")
+          if npm view "@luoshu-official/create-plugin@${VERSION}" version >/dev/null 2>&1; then
+            echo "skip=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "skip=false" >> "$GITHUB_OUTPUT"
+          fi
+
       - name: Publish（npm provenance）
+        if: steps.version.outputs.skip != 'true'
         working-directory: tools/create-plugin
         run: npm publish --access public
         env:

@@ -21,6 +21,7 @@
     "typecheck": "vue-tsc --noEmit -p tsconfig.json"
   },
   "devDependencies": {
+    "@types/node": "^26.6.5",
     "@vicons/tabler": "^0.13.0",
     "@vitejs/plugin-vue": "^6.0.10",
     "naive-ui": "^2.45.3",

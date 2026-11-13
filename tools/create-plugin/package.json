@@ -1,6 +1,6 @@
 {
   "name": "@luoshu-official/create-plugin",
-  "version": "0.1.1",
+  "version": "0.1.2",
   "description": "洛书（Luoshu）插件脚手架——一条命令生成可运行的插件项目",
   "license": "Apache-2.0",
   "type": "module",

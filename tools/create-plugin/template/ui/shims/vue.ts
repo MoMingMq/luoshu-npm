@@ -1,7 +1,7 @@
 // vue 宿主共享垫片（件模板）：vite alias 把 'vue' 重写到本文件——件模块用宿主
 // 单实例（window.__luoshuHostDeps.vue，渲染入口 host-deps.ts 最先注入），响应式与宿主
 // 组件树一致（双实例防线：件永不自捆 vue）。导出面为 vue 运行时命名空间的**全量
-// 机械枚举**（名单由 node --input-type=module 的 Object.keys(import('vue')) 生成，
+// 机械枚举**（名单由 node --input-type=module 的 Object.keys(import('vue')) 生成
 // 排除 default/__esModule/node 互导产物；与壳件 plugins/luoshu-shell/ui/shims/vue.ts
 // 同形态，换宿主全局名）。件内组件用到未列举 API 时往本清单补。
 

@@ -1,6 +1,6 @@
 # @luoshu-official/luoshu-api
 
-洛书（Luoshu）插件 API——开发洛书插件所需的类型定义与 manifest/provider 契约校验。版本与宿主主程序对齐（宿主 2.0.0 ↔ SDK 2.0.0）。
+洛书（Luoshu）插件 API——开发洛书插件所需的类型定义与代码元数据/provider 契约校验。2.0.2 与宿主 2.x 插件契约对齐，增补排序表达式、表注释与行编辑事务选项。
 
 ## 安装
 
@@ -14,14 +14,20 @@ npm install @luoshu-official/luoshu-api
 // 数据源插件工厂（表单/能力/Provider 包装为 cordis 插件对象）
 import { defineDataSource } from '@luoshu-official/luoshu-api'
 
-// meta 校验（zod schema：未知字段透传不拒绝）
+// 代码元数据校验（zod schema：未知字段透传不拒绝）
 import { validatePluginCodeMeta } from '@luoshu-official/luoshu-api'
+
+// SQL 方言工具：引号/占位符 + nodeQuery 排序表达式解析
+import { quoteIdentifier, quoteTableRef, placeholderOf, parseOrderBy } from '@luoshu-official/luoshu-api'
+
+// 网格行编辑共享核（逐行/整批事务）
+import { buildEditStatement, applyRowEditsViaQuery, applyRowEditsTransactional } from '@luoshu-official/luoshu-api'
 
 // 契约测试（需要项目内安装 vitest）
 import { describeV2Plugin } from '@luoshu-official/luoshu-api/testing'
 ```
 
-完整 API 见文档站：https://luoshu.mmingq.com/plugin-dev/
+`SchemaInfo.comment` 为表级注释可选字段；`TablePage.orderBy` 支持逗号分隔的「列 [ASC|DESC]」排序表达式，配合 `parseOrderBy` 逐段生成方言 ORDER BY。完整 API 见文档站：https://luoshu.mmingq.com/plugin-dev/
 
 ## License
 

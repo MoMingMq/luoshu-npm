@@ -7,6 +7,7 @@
 import { describe, expect, it } from 'vitest'
 import type { LuoshuError } from 'luoshu-api'
 import {
+  parseOrderBy,
   placeholderOf,
   quoteCharOf,
   quoteIdentifier,
@@ -113,5 +114,26 @@ describe('placeholderOf（位置参数占位符风格）', () => {
     expect(placeholderOf('mssql', 1)).toBe('?')
     expect(placeholderOf('oracle-like', 1)).toBe('?')
     expect(placeholderOf(undefined, 1)).toBe('?')
+  })
+})
+
+describe('parseOrderBy（用户排序表达式解析）', () => {
+  it('单列/多列、方向大小写、缺省 ASC', () => {
+    expect(parseOrderBy('name')).toEqual([{ column: 'name', desc: false }])
+    expect(parseOrderBy('name DESC')).toEqual([{ column: 'name', desc: true }])
+    expect(parseOrderBy('a desc, b ASC, c')).toEqual([
+      { column: 'a', desc: true },
+      { column: 'b', desc: false },
+      { column: 'c', desc: false }
+    ])
+  })
+
+  it('空串/空段/空白列名丢弃', () => {
+    expect(parseOrderBy('')).toEqual([])
+    expect(parseOrderBy(' , a , ')).toEqual([{ column: 'a', desc: false }])
+  })
+
+  it('非法方向词按列名取 ASC；多余空白归一', () => {
+    expect(parseOrderBy('  name   sideways ')).toEqual([{ column: 'name', desc: false }])
   })
 })
