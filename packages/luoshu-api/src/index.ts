@@ -38,7 +38,8 @@ export type {
   LogChunk,
   ReadFileOptions,
   ReadFileResult,
-  WriteFileOptions
+  WriteFileOptions,
+  ObjectDetailRow
 } from './types.ts'
 
 export type { LuoshuError } from './errors.ts'

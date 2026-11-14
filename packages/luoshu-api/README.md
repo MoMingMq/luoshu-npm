@@ -1,6 +1,6 @@
 # @luoshu-official/luoshu-api
 
-洛书（Luoshu）插件 API——开发洛书插件所需的类型定义与代码元数据/provider 契约校验。2.0.2 与宿主 2.x 插件契约对齐，增补排序表达式、表注释与行编辑事务选项。
+洛书（Luoshu）插件 API——开发洛书插件所需的类型定义与代码元数据/provider 契约校验。2.1.0 与宿主 2.x 插件契约对齐，增补对象详情批量统计（可选 `listObjectDetails` + `ObjectDetailRow`）、无主键表行编辑定位（NULL 落 IS NULL）、排序表达式、表注释与行编辑事务选项。
 
 ## 安装
 

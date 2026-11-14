@@ -85,13 +85,29 @@ describe('buildEditStatement（语句组装形态）', () => {
   it('update 缺 pk / 缺 values / 未知 op：组装期拒绝', () => {
     expect(() =>
       buildEditStatement('pg', 'public.t1', { rowKey: 'k', op: 'update', pk: {}, values: { a: 1 } })
-    ).toThrowError(/缺少主键条件/)
+    ).toThrowError(/缺少行定位条件/)
     expect(() =>
       buildEditStatement('pg', 'public.t1', { rowKey: 'k', op: 'update', pk: { id: 1 }, values: {} })
     ).toThrowError(/没有任何列值/)
     expect(() =>
       buildEditStatement('pg', 'public.t1', { rowKey: 'k', op: 'upsert' as RowEdit['op'], pk: { id: 1 } })
     ).toThrowError(/未知的编辑操作类型/)
+  })
+
+  it('无主键表全列定位：NULL 落 IS NULL（不占参数位），非 NULL 落等值（2026-11-14）', () => {
+    const s = buildEditStatement('pg', 'public.t1', {
+      rowKey: 'k',
+      op: 'update',
+      pk: { a: 1, b: null, c: 'x', d: undefined },
+      values: { a: 2 }
+    })
+    expect(s.sql).toBe(
+      'UPDATE "public"."t1" SET "a" = $1 WHERE "a" = $2 AND "b" IS NULL AND "c" = $3 AND "d" IS NULL'
+    )
+    expect(s.parameters).toEqual([2, 1, 'x'])
+    const d = buildEditStatement('mysql', 't1', { rowKey: 'k', op: 'delete', pk: { a: null, b: 5 } })
+    expect(d.sql).toBe('DELETE FROM `t1` WHERE `a` IS NULL AND `b` = ?')
+    expect(d.parameters).toEqual([5])
   })
 })
 

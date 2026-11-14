@@ -1,5 +1,7 @@
 import { describeProvider, describeFileIo } from './contract-test'
 import type { DataSourceProvider } from './provider'
+import { expect, it } from 'vitest'
+import type { ObjectDetailRow } from './types'
 
 // 契约测试工厂自检：用最小内存实现跑全套契约用例（含 R1 分页两用例）。
 // 该 fake 故意忽略 page 参数——固化「插件不支持分页时必须忽略 page 且调用成功」的契约下界
@@ -54,4 +56,19 @@ describeFileIo('api-fake-files', async () => {
     },
     node: { typeId: 'file', id: FAKE_FILE_ID }
   }
+})
+
+// 对象详情批量契约（2026-11-14 同步自主仓 444bbfb）：listObjectDetails 为可选方法
+// ——未实现时调用方 METHOD_NOT_SUPPORTED 降级，实现方可返回目录级统计行。
+/** 仅实现详情面的最小数据源，验证可选方法可被插件实现 */
+const detailProvider: Pick<DataSourceProvider, 'listObjectDetails'> = {
+  /** 返回固定详情行 */
+  listObjectDetails: async (): Promise<ObjectDetailRow[]> => [
+    { id: 'db.t1', label: 't1', rows: 12, dataLength: 4096, engine: 'InnoDB', comment: '测试表' }
+  ]
+}
+
+it('listObjectDetails 为可选方法，插件可实现并返回详情行', async () => {
+  const rows = await detailProvider.listObjectDetails!({ typeId: 'database', id: 'db', databaseId: 'db' }, 'tables')
+  expect(rows[0]).toMatchObject({ id: 'db.t1', rows: 12, engine: 'InnoDB' })
 })

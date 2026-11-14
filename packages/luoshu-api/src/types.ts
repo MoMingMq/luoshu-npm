@@ -510,3 +510,21 @@ export interface ReadFileResult {
  * 文件被外部修改时拒绝覆盖，见 walkthrough R22）。
  */
 export interface WriteFileOptions { [key: string]: unknown }
+
+/** 分类对象详情行（批量；id 与 listChildren/listViews 节点 id 同口径） */
+export interface ObjectDetailRow {
+  /** 对象唯一标识 */
+  id: string
+  /** 显示名 */
+  label: string
+  /** 行数（插件口径，可为估算值） */
+  rows?: number
+  /** 数据长度（字节，插件口径） */
+  dataLength?: number
+  /** 引擎或对象类型 */
+  engine?: string
+  /** 最近修改时间（ISO 字符串） */
+  modifiedAt?: string
+  /** 注释 */
+  comment?: string
+}

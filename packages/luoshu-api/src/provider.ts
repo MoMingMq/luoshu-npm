@@ -1,9 +1,9 @@
 import type {
   ApplyDdlOptions, ConnectionInfo, ConnectionOptions, DatabaseRef, DdlApplyResult, GeneratedDdl,
   InsertBatchOptions, InsertBatchResult, ListPage, LogChunk, LogStreamOptions, NodeQuery,
-  QueryParams, QueryResult, ReadFileOptions, ReadFileResult, ResultChunk, SchemaInfo, TableChangeRequest,
-  TableDdl, TablePage, TerminalSessionOptions, TreeNode, TreeNodeRef, TransactionHelper,
-  WriteFileOptions
+  ObjectDetailRow, QueryParams, QueryResult, ReadFileOptions, ReadFileResult, ResultChunk, SchemaInfo,
+  TableChangeRequest, TableDdl, TablePage, TerminalSessionOptions, TreeNode, TreeNodeRef,
+  TransactionHelper, WriteFileOptions
 } from './types.ts'
 import type { RowEdit, EditApplyEntry, ApplyRowEditsOptions } from './row-edit.ts'
 
@@ -26,6 +26,12 @@ export interface DataSourceProvider {
    * 支持分页的插件按 limit 截断，并在被截断段的末节点携带 TreeNode.cursor 供翻页。
    */
   listChildren(node: TreeNodeRef, page?: ListPage): Promise<TreeNode[]>
+  /**
+   * 批量返回某库/模式下某分类对象的详情统计。
+   * node 为库/模式节点；category 为库级分类键，查询/备份等存储分类不调用本方法。
+   * 未实现时调用方收到 METHOD_NOT_SUPPORTED，UI 降级为名称/类型，不视为违约。
+   */
+  listObjectDetails?(node: TreeNodeRef, category: string): Promise<ObjectDetailRow[]>
   /**
    * 列出库内视图：node = database 层节点。
    * 独立方法而非并入 listChildren——树「视图」分组懒加载专用（避开表层分页语义

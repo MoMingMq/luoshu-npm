@@ -1,6 +1,6 @@
 {
   "name": "@luoshu-official/luoshu-api",
-  "version": "2.0.2",
+  "version": "2.1.0",
   "description": "洛书（Luoshu）插件 API——开发洛书插件所需的类型定义与 manifest/provider 契约校验（版本与宿主对齐）",
   "keywords": [
     "luoshu",

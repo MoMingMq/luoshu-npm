@@ -50,7 +50,8 @@ export interface EditStatementBuilt {
   parameters: unknown[]
 }
 
-/** 主键列 → WHERE 等值条件（AND 连接，逐列参数化） */
+/** 行定位列 → WHERE 条件（AND 连接，逐列参数化；**NULL 值落 IS NULL**——无主键表
+ * 按全列定位时允许 NULL 列参与匹配，2026-11-14 无主键编辑支持） */
 function whereOf(dialect: SqlDialect | undefined, pk: Record<string, unknown>, startOrdinal: number): {
   clause: string
   params: unknown[]
@@ -58,16 +59,21 @@ function whereOf(dialect: SqlDialect | undefined, pk: Record<string, unknown>, s
 } {
   const cols = Object.keys(pk)
   if (cols.length === 0) {
-    throw createLuoshuError('LUOSHU.BAD_REQUEST', '缺少主键条件：update/delete 必须携带主键列值（pk）', {
-      hint: '无主键的表不支持网格编辑；请检查表结构或改在查询 Tab 手写 SQL'
+    throw createLuoshuError('LUOSHU.BAD_REQUEST', '缺少行定位条件：update/delete 必须携带定位列值（pk）', {
+      hint: '全二进制列等不可定位的表不支持网格编辑；请检查表结构或改在查询 Tab 手写 SQL'
     })
   }
   let ordinal = startOrdinal
   const parts: string[] = []
   const params: unknown[] = []
   for (const col of cols) {
+    const v = pk[col]
+    if (v === null || v === undefined) {
+      parts.push(`${quoteIdentifier(dialect, col)} IS NULL`)
+      continue
+    }
     parts.push(`${quoteIdentifier(dialect, col)} = ${placeholderOf(dialect, ++ordinal)}`)
-    params.push(pk[col])
+    params.push(v)
   }
   return { clause: parts.join(' AND '), params, ordinal }
 }
