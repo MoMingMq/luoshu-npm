@@ -100,3 +100,7 @@ export type { FilterSql, FilterSqlOptions } from './filter.ts'
 export { defineDataSource, projectServiceOf, normalizeRef, DATA_SOURCE_REF_ARGS } from './define-datasource.ts'
 export type { DataSourceDescriptor, DataSourcePlugin } from './define-datasource.ts'
 
+// 长任务电源缝：宿主插件经 ctx.reflect.get('power')、UI 插件经 preload 电源桥共用同一契约
+export { POWER_SEAM_ID, withPower, withPowerStream } from './power.ts'
+export type { PowerSeam, PowerState } from './power.ts'
+
