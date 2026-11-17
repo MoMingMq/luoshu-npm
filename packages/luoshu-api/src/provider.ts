@@ -18,6 +18,15 @@ import type { RowEdit, EditApplyEntry, ApplyRowEditsOptions } from './row-edit.t
 export interface DataSourceProvider {
   connect(connId: string, options: ConnectionOptions): Promise<ConnectionInfo>
   disconnect(connId: string): Promise<void>
+  /**
+   * 草稿探测（可选，R22）：用一份草稿参数临时建连并做版本探活，随后立即释放资源。
+   * 契约：**不得登记/替换/清空活动连接状态**——connect 建立的池与「最近一次
+   * connect」语义（无 connId 方法的路由依据）都不受影响；异常路径同样须回收临时资源。
+   * connector.probe（连接对话框「测试连接」）优先调用本方法；插件未实现时回退旧路径
+   * （临时 id connect + disconnect——该回退可能短暂改写活动连接指针，connector 负责
+   * 事后恢复）。未实现 = 方法不存在，不做 METHOD_NOT_SUPPORTED 特判。
+   */
+  probe?(options: ConnectionOptions): Promise<ConnectionInfo>
   listDatabases(): Promise<DatabaseRef[]>
   /**
    * 列出树节点的子节点。

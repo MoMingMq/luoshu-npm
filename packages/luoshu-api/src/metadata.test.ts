@@ -57,6 +57,32 @@ describe('validatePluginCodeMeta', () => {
     })).toThrow()
   })
 
+  it('form 文本域敏感/文件导入/旧路径/说明属性通过并保留', () => {
+    const m = validatePluginCodeMeta({
+      ...meta,
+      form: {
+        fields: [{
+          key: 'privateKeyContent',
+          type: 'textarea',
+          label: '登录密钥',
+          sensitive: true,
+          fileImport: true,
+          fileImportLabel: '加载本地密钥',
+          legacyPathKey: 'privateKeyPath',
+          description: '私钥内容（OpenSSH/PEM）',
+          placeholder: '-----BEGIN OPENSSH PRIVATE KEY-----'
+        }]
+      }
+    })
+    expect(m.form?.fields[0]).toMatchObject({
+      type: 'textarea',
+      sensitive: true,
+      fileImport: true,
+      fileImportLabel: '加载本地密钥',
+      legacyPathKey: 'privateKeyPath'
+    })
+  })
+
   it('nodeType creatable 空数组是矛盾信号（拒绝）', () => {
     expect(() => validatePluginCodeMeta({
       ...meta,

@@ -38,7 +38,7 @@ const settingsGroupSchema = z.object({
 
 const formFieldSchema = z.object({
   key: z.string().min(1),
-  type: z.enum(['string', 'number', 'password', 'select', 'checkbox', 'filePath']),
+  type: z.enum(['string', 'number', 'password', 'select', 'checkbox', 'filePath', 'textarea']),
   label: z.string(),
   required: z.boolean().optional(),
   default: z.union([z.string(), z.number(), z.boolean()]).optional(),
@@ -49,7 +49,19 @@ const formFieldSchema = z.object({
   section: z.string().optional(),
   visibleWhen: z
     .object({ field: z.string().min(1), equals: z.union([z.string(), z.number(), z.boolean()]) })
-    .optional()
+    .optional(),
+  /** 敏感字段：值走加密凭据通道，不进入 options 明文 */
+  sensitive: z.boolean().optional(),
+  /** 多行字段的文件导入入口（加载本地文件 + 拖拽） */
+  fileImport: z.boolean().optional(),
+  /** 文件导入按钮文案（缺省「加载本地文件」） */
+  fileImportLabel: z.string().min(1).optional(),
+  /** 旧版路径字段键：编辑时提供手动迁移入口 */
+  legacyPathKey: z.string().min(1).optional(),
+  /** 字段说明文案 */
+  description: z.string().optional(),
+  /** 显式占位文案 */
+  placeholder: z.string().optional()
 })
 
 const nodeTypeSchema = z.object({
