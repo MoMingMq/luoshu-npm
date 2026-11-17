@@ -64,6 +64,19 @@ const formFieldSchema = z.object({
   placeholder: z.string().optional()
 })
 
+/** 新建节点附加选项字段（宿主通用渲染：下拉可检索 + 允许手输 / 文本） */
+const createFieldSchema = z.object({
+  key: z.string().min(1).max(64),
+  label: z.string().min(1),
+  type: z.enum(['select', 'text']).default('select'),
+  options: z.array(z.object({ value: z.string(), label: z.string() })).optional(),
+  default: z.string().optional(),
+  /** 下拉允许输入选项外的值（如自定义字符集） */
+  allowCustom: z.boolean().optional(),
+  placeholder: z.string().optional(),
+  description: z.string().optional()
+})
+
 const nodeTypeSchema = z.object({
   id: z.string().min(1),
   label: z.string().min(1).optional(),
@@ -75,7 +88,11 @@ const nodeTypeSchema = z.object({
   renamable: z.boolean().optional(),
   deletable: z.boolean().optional(),
   draggable: z.boolean().optional(),
-  droppable: z.array(z.string().min(1)).min(1).optional()
+  droppable: z.array(z.string().min(1)).min(1).optional(),
+  /** 新建该类型节点时的附加选项（宿主动态渲染；createNode 第 4 参 opts 透传） */
+  createFields: z.array(createFieldSchema).min(1).optional(),
+  /** 新建 SQL 预览模板：`{key}` 占位、`[可选段]` 在占位为空时整段省略 */
+  createPreview: z.string().min(1).optional()
 })
 
 const CAPABILITY_VALUES = [
@@ -97,6 +114,7 @@ export const pluginCodeMetaSchema = z.looseObject({
 
 export type PluginCodeMeta = z.infer<typeof pluginCodeMetaSchema>
 export type PluginFormField = z.infer<typeof formFieldSchema>
+export type PluginCreateField = z.infer<typeof createFieldSchema>
 export type PluginNodeType = z.infer<typeof nodeTypeSchema>
 export type PluginSettingsEntry = z.infer<typeof settingsEntrySchema>
 export type PluginSettingsGroup = z.infer<typeof settingsGroupSchema>

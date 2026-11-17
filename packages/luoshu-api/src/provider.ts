@@ -132,10 +132,12 @@ export interface DataSourceProvider {
   // 主程序零类别逻辑（只做声明匹配与转发）。
   /**
    * 新建子节点：parent 为目标容器节点，type 为 creatable 声明的
-   * nodeType id（UI 子菜单来源），name 为用户输入名。返回新建的节点（UI 直插
-   * 树行）。冲突/非法名由插件抛 LuoshuError（UI toast + hint）。
+   * nodeType id（UI 子菜单来源），name 为用户输入名；opts 为 nodeType
+   * `createFields` 收集的附加选项（如数据库字符集/排序规则，键值均为字符串）。
+   * 返回新建的节点（UI 直插树行）。冲突/非法名由插件抛 LuoshuError（UI toast + hint）。
+   * 实现方可忽略 opts（未知键不报错）。
    */
-  createNode?(parent: TreeNodeRef, type: string, name: string): Promise<TreeNode>
+  createNode?(parent: TreeNodeRef, type: string, name: string, opts?: Record<string, unknown>): Promise<TreeNode>
   /**
    * 重命名节点（R17，可选； 契约修订：补第三可选参 opts?
    * 自由 KV 前瞻位，沿 writeFile opts 先例，v0 实现者可忽略。落地形态：表节点

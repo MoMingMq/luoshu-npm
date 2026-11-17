@@ -65,6 +65,7 @@ export type {
 export { pluginCodeMetaSchema, validatePluginCodeMeta } from './metadata.ts'
 export type {
   PluginCodeMeta,
+  PluginCreateField,
   PluginFormField,
   PluginNodeType,
   PluginSettingsEntry,
